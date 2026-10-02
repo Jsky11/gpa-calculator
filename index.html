@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5-Point GPA Calculator</title>
+    <meta name="description" content="Calculate your 5-point GPA and CGPA for Nigerian Universities.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Top Dashboard -->
+        <div class="dashboard-card">
+            <div class="speedometer-container">
+                <svg viewBox="0 0 200 115" class="speedometer" id="speedometer-svg">
+                    <defs>
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+                        </filter>
+                    </defs>
+                    
+                    <!-- Arcs -->
+                    <path d="M 20 100 A 80 80 0 0 1 35.28 53.04" stroke="#e8615c" stroke-width="16" fill="none" stroke-linecap="butt" />
+                    <path d="M 35.28 53.04 A 80 80 0 0 1 75.28 23.92" stroke="#f6a935" stroke-width="16" fill="none" stroke-linecap="butt" />
+                    <path d="M 75.28 23.92 A 80 80 0 0 1 124.72 23.92" stroke="#33c1d9" stroke-width="16" fill="none" stroke-linecap="butt" />
+                    <path d="M 124.72 23.92 A 80 80 0 0 1 164.72 53.04" stroke="#3b82f6" stroke-width="16" fill="none" stroke-linecap="butt" />
+                    <path d="M 164.72 53.04 A 80 80 0 0 1 180 100" stroke="#37c759" stroke-width="16" fill="none" stroke-linecap="butt" />
+                    
+                    <!-- Labels -->
+                    <text x="35" y="105" font-family="Inter" font-size="7" font-weight="600" fill="#475569" text-anchor="middle">0</text>
+                    <text x="51.4" y="69.7" font-family="Inter" font-size="7" font-weight="600" fill="#475569" text-anchor="middle">1</text>
+                    <text x="81.4" y="47.9" font-family="Inter" font-size="7" font-weight="600" fill="#475569" text-anchor="middle">2</text>
+                    <text x="118.6" y="47.9" font-family="Inter" font-size="7" font-weight="600" fill="#475569" text-anchor="middle">3</text>
+                    <text x="148.6" y="69.7" font-family="Inter" font-size="7" font-weight="600" fill="#475569" text-anchor="middle">4</text>
+                    <text x="165" y="105" font-family="Inter" font-size="7" font-weight="600" fill="#475569" text-anchor="middle">5</text>
+                    
+                    <!-- CGPA Text inside Speedometer -->
+                    <text id="cgpa-large" x="100" y="85" font-family="Inter" font-size="18" font-weight="700" fill="#1e293b" text-anchor="middle">0.00</text>
+                    
+                    <!-- Needle -->
+                    <g id="needle-group">
+                        <line x1="100" y1="100" x2="28" y2="100" stroke="#1f2937" stroke-width="3" stroke-linecap="round" />
+                    </g>
+                    <!-- Center Circle on top -->
+                    <circle cx="100" cy="100" r="5" fill="#1f2937" />
+                </svg>
+            </div>
+            
+            <div class="dashboard-stats">
+                <div class="stat-item">
+                    <div class="stat-label">CGPA</div>
+                    <div class="stat-value"><span id="cgpa-value">0.00</span> <span class="stat-max">/ 5.00</span></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Total Units</div>
+                    <div class="stat-value" id="total-units">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Classification</div>
+                    <div class="stat-value classification" id="classification">N/A</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Semesters Container -->
+        <div id="semesters-container">
+            <!-- Semesters will be injected here via JS -->
+        </div>
+
+        <!-- Add Semester Button -->
+        <button class="btn btn-primary btn-block" id="btn-add-semester">
+            + Add Semester
+        </button>
+
+    </div>
+
+    <!-- Templates -->
+    <template id="semester-template">
+        <div class="semester-card" data-semester-id="">
+            <div class="semester-header">
+                <div class="semester-title-group">
+                    <h2 class="semester-title">Semester <span class="semester-number"></span></h2>
+                    <div class="semester-gpa-badge">GPA: <span class="semester-gpa">0.00</span></div>
+                </div>
+                <button class="btn btn-remove-semester">Remove Semester</button>
+            </div>
+            
+            <div class="courses-list">
+                <!-- Courses injected here -->
+            </div>
+            
+            <button class="btn btn-secondary btn-block btn-add-course">+ Add Course</button>
+        </div>
+    </template>
+
+    <template id="course-template">
+        <div class="course-row" data-course-id="">
+            <input type="text" class="course-name-input" placeholder="Course Code" value="">
+            
+            <div class="select-wrapper">
+                <label>Units:</label>
+                <select class="units-select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            </div>
+            
+            <div class="select-wrapper">
+                <label>Grade:</label>
+                <select class="grade-select">
+                    <option value="5">A</option>
+                    <option value="4">B</option>
+                    <option value="3">C</option>
+                    <option value="2">D</option>
+                    <option value="1">E</option>
+                    <option value="0">F</option>
+                </select>
+            </div>
+            
+            <button class="btn-icon btn-remove-course" title="Remove Course">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+            </button>
+        </div>
+    </template>
+
+    <script src="script.js"></script>
+</body>
+</html>
